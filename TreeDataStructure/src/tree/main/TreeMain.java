@@ -1,6 +1,8 @@
 package tree.main;
 
+import tree.constants.TreeConstants;
 import tree.pojo.Node;
+import tree.traversal.ItrativeTraversal;
 import tree.traversal.RecursiveTraversal;
 
 public class TreeMain {
@@ -13,9 +15,10 @@ public class TreeMain {
 		root.right = new Node(3);
 		root.left.left = new Node(4);
 		root.left.right = new Node(5);
+		TreeInterface recursive = new RecursiveTraversal();
+		TreeInterface itrative = new ItrativeTraversal();
+		recursive.operate(root,TreeConstants.PRE_ORDER);
+		itrative.operate(root, TreeConstants.PRE_ORDER);
 		
-	
-		TreeInterface tree = new RecursiveTraversal();
-		tree.operate(root);
 	}
 }

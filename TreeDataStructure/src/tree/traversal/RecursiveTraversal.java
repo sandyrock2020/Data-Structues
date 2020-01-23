@@ -1,18 +1,25 @@
 package tree.traversal;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.function.Consumer;
+
+import tree.constants.TreeConstants;
 import tree.main.TreeInterface;
 import tree.pojo.Node;
 
 public class RecursiveTraversal implements TreeInterface {
 
+	Map<String, Consumer<Node>> funcMap =  new HashMap<>();
+	
+	
 	@Override
-	public void operate(Node root) {
-		System.out.println("PreOrder");
-		preOrder(root);
-		System.out.println("InOrder");
-		inOrder(root);
-		System.out.println("PostOrder");
-		postOrder(root);
+	public void operate(Node root,String type) {
+		funcMap.put(TreeConstants.IN_ORDER, this::inOrder);
+		funcMap.put(TreeConstants.PRE_ORDER, this::preOrder);
+		funcMap.put(TreeConstants.POST_ORDER, this::postOrder);
+		System.out.println(type);
+		funcMap.get(type).accept(root);
 	}
 
 	void preOrder(Node root) {
