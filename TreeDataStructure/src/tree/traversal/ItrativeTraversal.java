@@ -1,13 +1,9 @@
 package tree.traversal;
 
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.Map;
-import java.util.Queue;
 import java.util.Stack;
 import java.util.function.Consumer;
-
-import javax.annotation.PostConstruct;
 
 import tree.constants.TreeConstants;
 import tree.main.TreeInterface;
@@ -29,11 +25,24 @@ public class ItrativeTraversal implements TreeInterface {
 	}
 
 	private void postOrder(Node root) {
-
+		if (root == null)
+			return;
+		Stack<Node> stack =  new Stack<>();
+		stack.push(root);
+		while(!stack.isEmpty()) {
+			Node node = stack.peek();
+			stack.pop();
+			if(node.right!=null) {
+				stack.push(node.right);
+			}
+			if(node.left!=null) {
+				stack.push(node.left);
+			}
+			System.out.println(node.key);
+		}
 	}
 
 	private void inOrder(Node root) {
-		// TODO Auto-generated method stub
 
 	}
 
@@ -41,7 +50,7 @@ public class ItrativeTraversal implements TreeInterface {
 		if (root == null)
 			return;
 		Stack<Node> stack =  new Stack<>();
-		stack.add(root);
+		stack.push(root);
 		while(!stack.isEmpty()) {
 			Node node = stack.peek();
 			System.out.println(node.key);
