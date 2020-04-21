@@ -1,5 +1,8 @@
 package tree.compute;
 
+import java.util.LinkedList;
+import java.util.Queue;
+
 import tree.constants.TreeOperationEnum;
 import tree.main.TreeInterface;
 import tree.pojo.Node;
@@ -7,6 +10,7 @@ import tree.pojo.Node;
 public class BinaryTreeSize implements TreeInterface {
 
 	int maxLevel = 0;
+	Node pre = null;
 
 	@Override
 	public void operate(Node root, TreeOperationEnum treeOperationEnum) {
@@ -58,7 +62,8 @@ public class BinaryTreeSize implements TreeInterface {
 
 	/**
 	 * @param root
-	 * @param level //print leftmost node at every level
+	 * @param level
+	 * @see print leftmost node at every level
 	 */
 	public void printLeftViewTree(Node root, int level) {
 		if (root == null)
@@ -72,6 +77,10 @@ public class BinaryTreeSize implements TreeInterface {
 
 	}
 
+	/**
+	 * @param root
+	 * @return true if each parent node is equal to sum of its children
+	 */
 	public boolean checkChildrenSumProperty(Node root) {
 		if (root == null)
 			return true;
@@ -84,4 +93,67 @@ public class BinaryTreeSize implements TreeInterface {
 			sum += root.right.key;
 		return root.key == sum && checkChildrenSumProperty(root.left) && checkChildrenSumProperty(root.right);
 	}
+
+	/**
+	 * @param root
+	 * @return height of tree at any node and -1 if difference between height of
+	 *         left and right subtree is greater than 1
+	 */
+	public int checkBalanceTree(Node root) {
+		if (root == null)
+			return 0;
+		int l = checkBalanceTree(root.left);
+		if (l == -1)
+			return -1;
+		int r = checkBalanceTree(root.right);
+		if (r == -1)
+			return -1;
+		if (Math.abs(l - r) > 1)
+			return -1;
+		else
+			return Math.max(l, r) + 1;
+	}
+
+	public int getMaxWidth(Node root) {
+		Queue<Node> q = new LinkedList<>();
+		q.add(root);
+		int max = 0;
+		while (!q.isEmpty()) {
+			int count = q.size();
+			if (count > max)
+				max = count;
+			for (int i = 0; i < count; i++) {
+				Node node = q.poll();
+				if (node.left != null)
+					q.add(node.left);
+				if (node.right != null)
+					q.add(node.right);
+			}
+		}
+		return max;
+	}
+
+	public Node binaryTreeToDDL(Node root) {
+		if (root == null)
+			return root;
+		Node head = binaryTreeToDDL(root.left);
+		if (pre == null) {
+			head = root;
+		} else {
+			pre.right = root;
+			root.left = pre;
+		}
+		pre = root;
+		binaryTreeToDDL(root.right);
+		return head;
+	}
+	
+	public int maxDiameter(Node root) {
+		if(root==null)
+			return 0;
+		int dia = maxDiameter(root.left)+maxDiameter(root.right)+1;
+		return dia ;
+		
+	}
+
 }
